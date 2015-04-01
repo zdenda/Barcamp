@@ -6,17 +6,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private Data mData;
     private TextView mName;
 
     @Override
@@ -24,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mData = new Data(this);
         mName = (TextView) findViewById(R.id.tv_name);
 
     }
@@ -31,37 +27,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        JsonObjectRequest request = new JsonObjectRequest(Config.API_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            mName.setText(response.getString("name"));
-                        } catch (JSONException e) {
-                            if (Config.DEBUG) Log.d(Config.TAG, e.getMessage());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (Config.DEBUG) Log.d(Config.TAG, error.getMessage());
-                    }
-                }
-        );
-
-        request.setTag(this);
-
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
-
+        onRefresh(false);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        VolleySingleton.getInstance(this).getRequestQueue().cancelAll(this);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,10 +46,26 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            onRefresh(true);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onRefresh(boolean forceReload) {
+        mData.getName(new Data.Listener<String>() {
+            @Override
+            public void onData(String data) {
+                mName.setText(data);
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                if (Config.DEBUG) Log.d(Config.TAG, errorMsg);
+            }
+        }, forceReload);
     }
 }
