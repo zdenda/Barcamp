@@ -5,14 +5,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.List;
+
+import eu.zkkn.android.barcamp.model.Session;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private Data mData;
-    private TextView mName;
+    private ListView mSessions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +24,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mData = new Data(this);
-        mName = (TextView) findViewById(R.id.tv_name);
+        mSessions = (ListView) findViewById(R.id.lv_sessions);
+        mSessions.setEmptyView(findViewById(R.id.progressbar));
 
     }
 
@@ -55,10 +60,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onRefresh(boolean forceReload) {
-        mData.getName(new Data.Listener<String>() {
+        mData.getSessions(new Data.Listener<List<Session>>() {
             @Override
-            public void onData(String data) {
-                mName.setText(data);
+            public void onData(List<Session> data) {
+                SessionsAdapter adapter = new SessionsAdapter(MainActivity.this, data);
+                mSessions.setAdapter(adapter);
             }
 
             @Override

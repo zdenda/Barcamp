@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Barcamp</string>
 
-    <string name="text">Načítám …</string>
     <string name="action_refresh">Obnovit</string>
 </resources>

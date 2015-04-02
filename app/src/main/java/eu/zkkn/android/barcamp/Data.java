@@ -1,22 +1,26 @@
 package eu.zkkn.android.barcamp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.zkkn.android.barcamp.model.Session;
 
 /**
  *
  */
 public class Data {
-
-    private static final String PREFS_NAME = "DataPrefsFile";
-    private static final String PREFS_KEY_NAME = "prefsKeyName";
 
     private static final String VOLLEY_TAG = "DataVolleyTag";
 
@@ -26,26 +30,37 @@ public class Data {
         mCtx = context;
     }
 
-    public void getName(Listener<String> listener, boolean forceReload) {
-        SharedPreferences preferences = mCtx.getSharedPreferences(PREFS_NAME, 0);
-        String name = preferences.getString(PREFS_KEY_NAME, null);
-        if (name == null || forceReload) {
-            loadName(listener, preferences);
-            return;
-        }
-        listener.onData(name);
+
+    public void getSessions(Listener<List<Session>> listener, boolean forceReload) {
+        loadSessions(listener);
     }
 
-    private void loadName(final Listener<String> listener, final SharedPreferences preferences) {
+
+    private void loadSessions(final Listener<List<Session>> listener) {
         JsonObjectRequest request = new JsonObjectRequest(Config.API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            String name = response.getString("name");
-                            preferences.edit().putString(PREFS_KEY_NAME, name).commit();
-                            listener.onData(name);
-                        } catch (JSONException e) {
+                            ArrayList<Session> sessions = new ArrayList<>();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                            JSONArray jsonSessions = response.getJSONArray("sessions");
+                            for (int i = 0; i < jsonSessions.length(); ++i) {
+                                JSONObject jsonSession = jsonSessions.getJSONObject(i);
+                                Session session = new Session();
+                                session.id = jsonSession.getInt("id");
+                                session.room = jsonSession.getInt("room");
+                                session.start = dateFormat.parse(jsonSession.getString("start"));
+                                session.end = dateFormat.parse(jsonSession.getString("end"));
+                                session.name = jsonSession.getString("name");
+                                session.speaker = jsonSession.getString("speaker");
+                                session.description = jsonSession.getString("description");
+
+                                sessions.add(session);
+                            }
+
+                            listener.onData(sessions);
+                        } catch (JSONException | ParseException e) {
                             listener.onError(e.getMessage());
                         }
                     }
