@@ -1,16 +1,14 @@
 package eu.zkkn.android.barcamp;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.List;
-
-import eu.zkkn.android.barcamp.model.Session;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -60,10 +58,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onRefresh(boolean forceReload) {
-        mData.getSessions(new Data.Listener<List<Session>>() {
+        mData.getSessions(new Data.Listener<Cursor>() {
             @Override
-            public void onData(List<Session> data) {
-                SessionsAdapter adapter = new SessionsAdapter(MainActivity.this, data);
+            public void onData(Cursor data) {
+                //TODO: this SimpleCursorAdapter is deprecated
+                SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this,
+                        R.layout.row_session, data,
+                        new String[] {SessionTable.COLUMN_NAME, SessionTable.COLUMN_SPEAKER},
+                        new int[] {R.id.tv_name, R.id.tv_speaker});
                 mSessions.setAdapter(adapter);
             }
 
