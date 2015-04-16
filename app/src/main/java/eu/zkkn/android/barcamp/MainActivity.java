@@ -2,7 +2,6 @@ package eu.zkkn.android.barcamp;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -61,11 +60,8 @@ public class MainActivity extends ActionBarActivity {
         mData.getSessions(new Data.Listener<Cursor>() {
             @Override
             public void onData(Cursor data) {
-                //TODO: this SimpleCursorAdapter is deprecated
-                SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this,
-                        R.layout.row_session, data,
-                        new String[] {SessionTable.COLUMN_NAME, SessionTable.COLUMN_SPEAKER},
-                        new int[] {R.id.tv_name, R.id.tv_speaker});
+                GroupsCursorAdapter adapter = new GroupsCursorAdapter(MainActivity.this,
+                        R.layout.row_session, data);
                 mSessions.setAdapter(adapter);
             }
 

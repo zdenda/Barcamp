@@ -44,9 +44,10 @@ public class Data {
 
     private Cursor getSessions() {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
-                SessionTable.COLUMN_SPEAKER};
+                SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START};
         return mDb.getReadableDatabase()
-                .query(SessionTable.TABLE_NAME, projection, null, null, null, null, null);
+                .query(SessionTable.TABLE_NAME, projection, null, null, null, null,
+                        SessionTable.COLUMN_START);
     }
 
     private void loadSessions(final Listener<Cursor> listener) {
