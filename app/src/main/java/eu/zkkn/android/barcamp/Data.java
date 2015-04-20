@@ -15,6 +15,9 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import eu.zkkn.android.barcamp.model.Session;
 
 /**
  *
@@ -32,25 +35,71 @@ public class Data {
         mDb = new DbHelper(context);
     }
 
+    /**
+     * Close any open database connection
+     */
+    public void close() {
+        mDb.close();
+    }
 
     public void getSessions(Listener<Cursor> listener, boolean forceReload) {
         Cursor cursor = getSessions();
         if (forceReload || cursor.getCount() == 0) {
-            loadSessions(listener);
+            loadAllSessionsFromApi(listener);
             return;
         }
         listener.onData(cursor);
     }
 
+    public void getSession(int sessionId, Listener<Session> listener, boolean forceReload) {
+        Session session = getSession(sessionId);
+        if (forceReload || session == null) {
+            loadAllSessionsFromApi(listener, sessionId);
+            return;
+        }
+        listener.onData(session);
+    }
+
     private Cursor getSessions() {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
                 SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START};
+        //TODO: what is better to return Cursor or list of Sessions?
         return mDb.getReadableDatabase()
                 .query(SessionTable.TABLE_NAME, projection, null, null, null, null,
                         SessionTable.COLUMN_START);
     }
 
-    private void loadSessions(final Listener<Cursor> listener) {
+    private Session getSession(int sessionId) {
+        String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
+                SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START, SessionTable.COLUMN_END,
+                SessionTable.COLUMN_ROOM, SessionTable.COLUMN_DESCRIPTION};
+        SQLiteDatabase database = mDb.getReadableDatabase();
+        Cursor cursor = database.query(SessionTable.TABLE_NAME, projection,
+                SessionTable.COLUMN_ID + "=?", new String[]{String.valueOf(sessionId)},
+                null, null, null);
+
+        if (cursor == null || !cursor.moveToFirst()) return null;
+
+        Session session = new Session();
+        session.name = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_NAME));
+        session.speaker = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_SPEAKER));
+        session.room = cursor.getInt(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_ROOM));
+        session.start = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_START)));
+        session.end = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_END)));
+        session.description = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_DESCRIPTION));
+
+        cursor.close();
+        database.close();
+
+        return session;
+    }
+
+
+    private void loadAllSessionsFromApi(final Listener listener) {
+        loadAllSessionsFromApi(listener, 0);
+    }
+
+    private void loadAllSessionsFromApi(final Listener listener, final int sessionId) {
         JsonObjectRequest request = new JsonObjectRequest(Config.API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -87,7 +136,8 @@ public class Data {
                         } finally {
                             db.close();
                         }
-                        listener.onData(getSessions());
+                        //TODO: do it better
+                        listener.onData(sessionId > 0 ? getSession(sessionId) : getSessions());
                     }
                 },
                 new Response.ErrorListener() {

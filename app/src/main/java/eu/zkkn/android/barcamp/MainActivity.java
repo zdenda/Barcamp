@@ -1,11 +1,14 @@
 package eu.zkkn.android.barcamp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +26,17 @@ public class MainActivity extends ActionBarActivity {
         mData = new Data(this);
         mSessions = (ListView) findViewById(R.id.lv_sessions);
         mSessions.setEmptyView(findViewById(R.id.progressbar));
+        mSessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int sessionId = (int) view.getTag();
+                if (sessionId > 0) {
+                    Intent intent = new Intent(MainActivity.this, SessionDetailActivity.class);
+                    intent.putExtra(SessionDetailActivity.SESSION_ID, sessionId);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 
@@ -32,6 +46,11 @@ public class MainActivity extends ActionBarActivity {
         onRefresh(false);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mData.close();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

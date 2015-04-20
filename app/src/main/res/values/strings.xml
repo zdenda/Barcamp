@@ -2,4 +2,6 @@
     <string name="app_name">Barcamp</string>
 
     <string name="action_refresh">Obnovit</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_session_detail">Detail přednášky</string>
 </resources>

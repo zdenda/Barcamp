@@ -70,6 +70,8 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
         TextView speaker = (TextView) view.findViewById(R.id.tv_speaker);
         speaker.setText(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_SPEAKER)));
 
+        view.setTag(cursor.getInt(mColumnIndexes.get(SessionTable.COLUMN_ID)));
+
     }
 
     @Override
