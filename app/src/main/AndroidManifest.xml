@@ -3,6 +3,19 @@
     package="eu.zkkn.android.barcamp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- Creates a custom permission so only this app can receive its messages. -->
+    <permission
+        android:name="eu.zkkn.android.barcamp.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="eu.zkkn.android.barcamp.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +39,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.zkkn.android.barcamp.MainActivity" />
         </activity>
+
+        <receiver
+            android:name=".GcmReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="eu.zkkn.android.barcamp" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".GcmIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
