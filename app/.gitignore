@@ -1,3 +1,4 @@
 /build
 *.apk
 manifest-merger-release-report.txt
+src/main/java/eu/zkkn/android/barcamp/Config.java
