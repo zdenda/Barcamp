@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.Date;
+
+import eu.zkkn.android.barcamp.model.GcmNotification;
+
 /**
  *
  */
@@ -26,11 +30,22 @@ public class GcmIntentService extends IntentService {
             // message should have the right version and type
             if (Config.BARCAMP_GCM_VERSION.equals(extras.getString("version"))
                     && "BarcampNotification".equals(extras.getString("type"))) {
-                showNotification(extras.getString("text"));
+                String text = extras.getString("text");
+                saveNotification(text);
+                showNotification(text);
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         GcmReceiver.completeWakefulIntent(intent);
+    }
+
+    private void saveNotification(String text) {
+        GcmNotification n = new GcmNotification();
+        n.text = text;
+        n.received = new Date();
+
+        Data data = new Data(this);
+        data.saveGcmNotification(n);
     }
 
     private void showNotification(String text) {
@@ -41,12 +56,10 @@ public class GcmIntentService extends IntentService {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setContentText(text)
                 .setAutoCancel(true);
-        //TODO: probably show activity with a list of all previous notification
-        /*
-        Intent intent = new Intent(this, MainActivity.class);
+
+        Intent intent = new Intent(this, GcmNotificationsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        */
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         mBuilder.setContentIntent(pendingIntent);
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                 .notify(NOTIFICATION_ID, mBuilder.build());

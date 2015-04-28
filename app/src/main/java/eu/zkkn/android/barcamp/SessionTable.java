@@ -20,7 +20,7 @@ public class SessionTable {
     public static final String COLUMN_SPEAKER = "speaker";
     public static final String COLUMN_DESCRIPTION = "description";
 
-    private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " ("
+    private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY,"
             + COLUMN_ROOM + " INTEGER,"
             + COLUMN_START + " INTEGER,"

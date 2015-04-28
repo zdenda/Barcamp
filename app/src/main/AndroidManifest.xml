@@ -39,6 +39,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.zkkn.android.barcamp.MainActivity" />
         </activity>
+        <activity
+            android:name=".GcmNotificationsActivity"
+            android:label="@string/title_activity_gcm_notifications" >
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="eu.zkkn.android.barcamp.MainActivity" />
+        </activity>
 
         <receiver
             android:name=".GcmReceiver"
