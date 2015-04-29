@@ -9,10 +9,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,12 +22,11 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String PREF_APP_VERSION = "appVersion";
     private static final String PREF_REG_ID = "gcmRegistrationId";
 
-    private Data mData;
     private ListView mSessions;
 
     @Override
@@ -44,8 +40,6 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
-
-        mData = new Data(this);
         mSessions = (ListView) findViewById(R.id.lv_sessions);
         mSessions.setEmptyView(findViewById(R.id.progressbar));
         mSessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,35 +63,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        mData.close();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            onRefresh(true);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onRefresh(boolean forceReload) {
+    protected void onRefresh(boolean forceReload) {
         mData.getSessions(new Data.Listener<Cursor>() {
             @Override
             public void onData(Cursor data) {
