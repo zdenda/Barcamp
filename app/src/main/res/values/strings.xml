@@ -5,4 +5,6 @@
 
     <string name="title_activity_session_detail">Detail přednášky</string>
     <string name="title_activity_gcm_notifications">Oznámení</string>
+
+    <string name="mass_notifications">Hromadná oznámení</string>
 </resources>

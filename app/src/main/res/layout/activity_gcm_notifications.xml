@@ -1,4 +1,4 @@
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,18 @@
     <ListView
         android:id="@+id/lv_notifications"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sw_notifications"
+        android:layout_alignParentTop="true" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/sw_notifications"
+        android:checked="true"
+        android:text="@string/mass_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -17,4 +28,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-</FrameLayout>
+</RelativeLayout>

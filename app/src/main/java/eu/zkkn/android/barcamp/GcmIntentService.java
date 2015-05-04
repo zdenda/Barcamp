@@ -32,7 +32,9 @@ public class GcmIntentService extends IntentService {
                     && "BarcampNotification".equals(extras.getString("type"))) {
                 String text = extras.getString("text");
                 saveNotification(text);
-                showNotification(text);
+                if (Preferences.isGcmNotificationsEnabled(this)) {
+                    showNotification(text);
+                }
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -49,7 +51,6 @@ public class GcmIntentService extends IntentService {
     }
 
     private void showNotification(String text) {
-        //TODO: let user disable notification in settings
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Barcamp")

@@ -28,6 +28,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_gcm_notifications)
+                .setChecked(Preferences.isGcmNotificationsEnabled(this));
         return true;
     }
 
@@ -36,15 +38,25 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                onRefresh(true);
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            onRefresh(true);
-            return true;
+            case R.id.action_gcm_notifications:
+                Preferences.setGcmNotificationsEnabled(this, !item.isChecked());
+                onSettingsChanged();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    // when some settings is changed in the Menu, we might need to update state of some controls
+    // in current activity to reflect that change
+    protected void onSettingsChanged() {
+        invalidateOptionsMenu();
     }
 
     protected abstract void onRefresh(boolean forceReload);
