@@ -59,6 +59,10 @@
                 <category android:name="eu.zkkn.android.barcamp" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
 
         <service
             android:name=".GcmIntentService"

@@ -68,11 +68,18 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/cb_notification"
+        android:text="Upozornění na začátek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/cb_notification"
         android:layout_centerHorizontal="true" >
 
         <TextView

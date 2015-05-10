@@ -17,12 +17,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import eu.zkkn.android.barcamp.model.Alarm;
 import eu.zkkn.android.barcamp.model.GcmNotification;
 import eu.zkkn.android.barcamp.model.Session;
 
 /**
  *
  */
+//TODO: This is becoming bigger and bigger ugliness, so you should really rewrite it!!! soon!!!
+// maybe https://dl.google.com/googleio/2010/android-developing-RESTful-android-apps.pdf
 public class Data {
 
     private static final String VOLLEY_TAG = "DataVolleyTag";
@@ -79,6 +82,24 @@ public class Data {
         db.close();
     }
 
+    public void setAlarm(int sessionId, Date time) {
+        ContentValues values = new ContentValues();
+        values.put(AlarmTable.COLUMN_SESSION_ID, sessionId);
+        values.put(AlarmTable.COLUMN_TIME, time.getTime());
+
+        SQLiteDatabase db = mDb.getWritableDatabase();
+        db.insert(AlarmTable.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void deleteAlarm(int sessionId) {
+        SQLiteDatabase db = mDb.getWritableDatabase();
+        db.delete(AlarmTable.TABLE_NAME, AlarmTable.COLUMN_SESSION_ID + "=?",
+                new String[]{String.valueOf(sessionId)});
+        db.close();
+    }
+
+
     private Cursor getSessions() {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
                 SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START};
@@ -88,7 +109,7 @@ public class Data {
                         SessionTable.COLUMN_START);
     }
 
-    private Session getSession(int sessionId) {
+    public Session getSession(int sessionId) {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
                 SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START, SessionTable.COLUMN_END,
                 SessionTable.COLUMN_ROOM, SessionTable.COLUMN_DESCRIPTION};
@@ -100,6 +121,7 @@ public class Data {
         if (cursor == null || !cursor.moveToFirst()) return null;
 
         Session session = new Session();
+        session.id = sessionId;
         session.name = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_NAME));
         session.speaker = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_SPEAKER));
         session.room = cursor.getInt(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_ROOM));
@@ -107,10 +129,32 @@ public class Data {
         session.end = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_END)));
         session.description = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_DESCRIPTION));
 
+        session.alarm = getAlarm(sessionId);
+
         cursor.close();
         database.close();
 
         return session;
+    }
+
+    private Alarm getAlarm(int sessionId) {
+        String[] projection = {AlarmTable.COLUMN_ID, AlarmTable.COLUMN_SESSION_ID,
+                AlarmTable.COLUMN_TIME};
+        SQLiteDatabase database = mDb.getReadableDatabase();
+        Cursor cursor = database.query(AlarmTable.TABLE_NAME, projection,
+                AlarmTable.COLUMN_SESSION_ID + "=?", new String[]{String.valueOf(sessionId)},
+                null, null, null, "1");
+
+        if (cursor == null || !cursor.moveToFirst()) return null;
+
+        Alarm alarm = new Alarm();
+        alarm.id = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmTable.COLUMN_ID));
+        alarm.sessionId = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmTable.COLUMN_SESSION_ID));
+        alarm.time = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(AlarmTable.COLUMN_TIME)));
+
+        cursor.close();
+
+        return alarm;
     }
 
 
@@ -131,23 +175,32 @@ public class Data {
                             for (int i = 0; i < jsonSessions.length(); ++i) {
                                 JSONObject jsonSession = jsonSessions.getJSONObject(i);
 
+
+                                int id = jsonSession.getInt("id");
+                                int room = jsonSession.getInt("room");
+                                Date start = dateFormat.parse(jsonSession.getString("start"));
+                                Date end = dateFormat.parse(jsonSession.getString("end"));
+                                String name = jsonSession.getString("name");
+                                String speaker = jsonSession.getString("speaker");
+                                String description = jsonSession.getString("description");
+
                                 ContentValues values = new ContentValues();
-                                values.put(SessionTable.COLUMN_ID,
-                                        jsonSession.getInt("id"));
-                                values.put(SessionTable.COLUMN_ROOM,
-                                        jsonSession.getInt("room"));
-                                values.put(SessionTable.COLUMN_START,
-                                        dateFormat.parse(jsonSession.getString("start")).getTime());
-                                values.put(SessionTable.COLUMN_END,
-                                        dateFormat.parse(jsonSession.getString("end")).getTime());
-                                values.put(SessionTable.COLUMN_NAME,
-                                        jsonSession.getString("name"));
-                                values.put(SessionTable.COLUMN_SPEAKER,
-                                        jsonSession.getString("speaker"));
-                                values.put(SessionTable.COLUMN_DESCRIPTION,
-                                        jsonSession.getString("description"));
+                                values.put(SessionTable.COLUMN_ID, id);
+                                values.put(SessionTable.COLUMN_ROOM, room);
+                                values.put(SessionTable.COLUMN_START, start.getTime());
+                                values.put(SessionTable.COLUMN_END, end.getTime());
+                                values.put(SessionTable.COLUMN_NAME, name);
+                                values.put(SessionTable.COLUMN_SPEAKER, speaker);
+                                values.put(SessionTable.COLUMN_DESCRIPTION, description);
 
                                 db.insert(SessionTable.TABLE_NAME, null, values);
+
+                                // reschedule alarm if is set and time of session has been changed
+                                Alarm alarm = getAlarm(id);
+                                if (alarm != null && !alarm.time.equals(start)) {
+                                    AlarmReceiver.cancelAlarm(mCtx, id);
+                                    AlarmReceiver.setAlarm(mCtx, id, start);
+                                }
                             }
 
                         } catch (JSONException | ParseException e) {

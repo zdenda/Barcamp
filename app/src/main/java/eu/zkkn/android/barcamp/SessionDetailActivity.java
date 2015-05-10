@@ -3,6 +3,8 @@ package eu.zkkn.android.barcamp;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -51,13 +53,25 @@ public class SessionDetailActivity extends BaseActivity {
         }, forceReload);
     }
 
-    private void setWidgets(Session session) {
+    private void setWidgets(final Session session) {
         ((TextView) findViewById(R.id.tv_name)).setText(session.name);
         ((TextView) findViewById(R.id.tv_speaker)).setText(session.speaker);
         ((TextView) findViewById(R.id.tv_room)).setText(String.valueOf(session.room));
         ((TextView) findViewById(R.id.tv_start)).setText(mTimeFormat.format(session.start));
         ((TextView) findViewById(R.id.tv_end)).setText(mTimeFormat.format(session.end));
         ((TextView) findViewById(R.id.tv_description)).setText(session.description);
+        CheckBox notification = (CheckBox) findViewById(R.id.cb_notification);
+        notification.setChecked(session.alarm != null);
+        notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AlarmReceiver.setAlarm(SessionDetailActivity.this, session.id, session.start);
+                } else {
+                    AlarmReceiver.cancelAlarm(SessionDetailActivity.this, session.id);
+                }
+            }
+        });
         findViewById(R.id.progressbar).setVisibility(View.GONE);
     }
 
