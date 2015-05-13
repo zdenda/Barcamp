@@ -39,7 +39,8 @@ public class GcmNotificationsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onRefresh(boolean forceReload) {
+    protected void onRefresh(boolean forceApiReload) {
+        //TODO: use Loader
         Cursor notifications = mData.getGcmNotifications();
         GcmNotificationsAdapter adapter = new GcmNotificationsAdapter(this,
                 R.layout.row_notification, notifications,

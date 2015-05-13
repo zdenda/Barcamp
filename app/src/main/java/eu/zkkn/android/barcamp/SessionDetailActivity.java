@@ -1,57 +1,83 @@
 package eu.zkkn.android.barcamp;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 
 import eu.zkkn.android.barcamp.model.Session;
 
 
-public class SessionDetailActivity extends BaseActivity {
+public class SessionDetailActivity extends BaseActivity
+        implements LoaderManager.LoaderCallbacks<DataObject<Session>> {
 
     public static final String SESSION_ID = "sessionId";
+
+    private static final int LOADER_SESSION_ID = 0;
+    private static final String ARGS_SESSION_ID_KEY = "sessionIdKey";
 
     /**
      * Format for output of time
      */
     private DateFormat mTimeFormat;
-    private int mSessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_detail);
 
-        mSessionId = getIntent().getIntExtra(SESSION_ID, -1);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);
 
+        int sessionId = getIntent().getIntExtra(SESSION_ID, 0);
+        if (sessionId > 0) {
+            getSupportLoaderManager().initLoader(LOADER_SESSION_ID,
+                    Helper.intBundle(ARGS_SESSION_ID_KEY, sessionId), this);
+        }
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        onRefresh(false);
+    protected void onRefresh(boolean forceApiReload) {
+        Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSION_ID);
+        if (forceApiReload) {
+            ((DataLoader) loader).loadFromApi();
+        } else {
+            loader.forceLoad();
+        }
     }
 
     @Override
-    protected void onRefresh(boolean forceReload) {
-        mData.getSession(mSessionId, new Data.Listener<Session>() {
-            @Override
-            public void onData(Session session) {
-                setWidgets(session);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                if (Config.DEBUG) Log.d(Config.TAG, errorMsg);
-            }
-        }, forceReload);
+    protected void showError(int errorCode) {
+        //TODO: display proper error message
+        Toast.makeText(this, "Error: " + errorCode, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public Loader<DataObject<Session>> onCreateLoader(int id, Bundle args) {
+        final int sessionId = args.getInt(ARGS_SESSION_ID_KEY, 0);
+        return new DataLoader<Session>(this) {
+            @Override
+            public DataObject<Session> loadInBackground() {
+                return new DataObject<>(getDatabase().getSession(sessionId));
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<DataObject<Session>> loader, DataObject<Session> data) {
+        if (!data.hasError() && data.getData() != null) setWidgets(data.getData());
+    }
+
+    @Override
+    public void onLoaderReset(Loader<DataObject<Session>> loader) {
+    }
+
 
     private void setWidgets(final Session session) {
         ((TextView) findViewById(R.id.tv_name)).setText(session.name);

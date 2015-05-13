@@ -2,6 +2,7 @@ package eu.zkkn.android.barcamp;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,6 +11,7 @@ import android.view.MenuItem;
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
+    /** @deprecated */
     protected Data mData;
 
     @Override
@@ -59,6 +61,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         invalidateOptionsMenu();
     }
 
-    protected abstract void onRefresh(boolean forceReload);
+    protected void showError(int errorCode) {
+        // if nothing else, at least log that error
+        if (Config.DEBUG) Log.d(Config.TAG, "ERROR (code: "+ errorCode +")");
+    }
+
+    protected abstract void onRefresh(boolean forceApiReload);
 
 }

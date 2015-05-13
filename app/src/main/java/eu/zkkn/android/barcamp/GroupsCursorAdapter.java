@@ -30,7 +30,7 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
         //TODO: this ResourceCursorAdapter constructor is deprecated
         super(context, layout, c);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(context);
-        findColumns(c.getColumnNames());
+        if (c != null) findColumns(c.getColumnNames());
 
     }
 
@@ -78,7 +78,7 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
     public Cursor swapCursor(Cursor c) {
         Cursor res = super.swapCursor(c);
         // rescan columns in case cursor layout is different
-        findColumns(c.getColumnNames());
+        if (c != null) findColumns(c.getColumnNames());
         return res;
     }
 

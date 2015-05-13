@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,17 +24,21 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import java.io.IOException;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+        implements LoaderManager.LoaderCallbacks<DataObject<Cursor>> {
 
     private static final String PREF_APP_VERSION = "appVersion";
     private static final String PREF_REG_ID = "gcmRegistrationId";
+    private static final int LOADER_SESSIONS_ID = 0;
 
-    private ListView mSessions;
+    private GroupsCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportLoaderManager().initLoader(LOADER_SESSIONS_ID, null, this);
 
         if (checkPlayServices()) {
             if (getGcmRegistrationId().length() == 0) {
@@ -40,7 +46,7 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        mSessions = (ListView) findViewById(R.id.lv_sessions);
+        ListView mSessions = (ListView) findViewById(R.id.lv_sessions);
         mSessions.setEmptyView(findViewById(R.id.progressbar));
         mSessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,31 +60,53 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        mAdapter = new GroupsCursorAdapter(this, R.layout.row_session, null);
+        mSessions.setAdapter(mAdapter);
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        onRefresh(false);
+    protected void onRefresh(boolean forceApiReload) {
+        Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
+        if (forceApiReload) {
+            ((DataLoader) loader).loadFromApi();
+        } else {
+            loader.forceLoad();
+        }
     }
 
     @Override
-    protected void onRefresh(boolean forceReload) {
-        mData.getSessions(new Data.Listener<Cursor>() {
-            @Override
-            public void onData(Cursor data) {
-                GroupsCursorAdapter adapter = new GroupsCursorAdapter(MainActivity.this,
-                        R.layout.row_session, data);
-                mSessions.setAdapter(adapter);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-                if (Config.DEBUG) Log.d(Config.TAG, errorMsg);
-            }
-        }, forceReload);
+    protected void showError(int errorCode) {
+        //TODO: display proper error message
+        Toast.makeText(this, "Error: " + errorCode, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public Loader<DataObject<Cursor>> onCreateLoader(int id, Bundle args) {
+        return new DataLoader<Cursor>(this) {
+            @Override
+            public DataObject<Cursor> loadInBackground() {
+                Cursor sessions = getDatabase().getSessions();
+                //if there are no sessions in the database, load them from API
+                if (sessions.getCount() == 0) loadFromApi();
+                return new DataObject<>(sessions);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<DataObject<Cursor>> loader, DataObject<Cursor> data) {
+        if (data.hasError()) {
+            showError(data.getAndResetErrorCode());
+        }
+        mAdapter.swapCursor(data.getData());
+    }
+
+    @Override
+    public void onLoaderReset(Loader<DataObject<Cursor>> loader) {
+        mAdapter.swapCursor(null);
+    }
+
 
     /**
      * Check the device to make sure it has the Google Play Services APK
@@ -155,7 +183,7 @@ public class MainActivity extends BaseActivity {
     private String getGcmRegistrationId() {
         final SharedPreferences prefs = getDefaultSharedPreferences();
         String registrationId = prefs.getString(PREF_REG_ID, "");
-        if (registrationId.length() == 0) {
+        if (registrationId != null && registrationId.length() == 0) {
             if (Config.DEBUG) Log.d(Config.TAG, "GCM Registration not found.");
             return "";
         }
