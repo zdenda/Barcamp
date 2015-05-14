@@ -46,7 +46,7 @@ public class SessionDetailActivity extends BaseActivity
     protected void onRefresh(boolean forceApiReload) {
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSION_ID);
         if (forceApiReload) {
-            ((DataLoader) loader).loadFromApi();
+            ((DataLoader) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }

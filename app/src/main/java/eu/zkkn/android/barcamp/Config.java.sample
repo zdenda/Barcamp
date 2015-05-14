@@ -26,6 +26,11 @@ public class Config {
     public static final String BARCAMP_GCM_VERSION = "1";
 
     /**
+      * Minimal interval for automatic synchronization with API in ms
+      */
+     public static final long API_SYNC_INTERVAL_MS = 8 * 60 * 60 * 1000;
+
+    /**
      * This is the Project Number from the Google Developers Console
      * https://console.developers.google.com/project
      */

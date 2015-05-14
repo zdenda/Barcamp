@@ -29,6 +29,7 @@ public class MainActivity extends BaseActivity
 
     private static final String PREF_APP_VERSION = "appVersion";
     private static final String PREF_REG_ID = "gcmRegistrationId";
+    private static final String PREF_LAST_API_SYNC = "lastApiSyncTimeMs";
     private static final int LOADER_SESSIONS_ID = 0;
 
     private GroupsCursorAdapter mAdapter;
@@ -39,6 +40,15 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
 
         getSupportLoaderManager().initLoader(LOADER_SESSIONS_ID, null, this);
+
+        // check whether we should synchronize our data with API
+        SharedPreferences pref = getDefaultSharedPreferences();
+        long lastSync = pref.getLong(PREF_LAST_API_SYNC, 0);
+        long now = System.currentTimeMillis();
+        if (now > (lastSync + Config.API_SYNC_INTERVAL_MS)) {
+            pref.edit().putLong(PREF_LAST_API_SYNC, now).commit();
+            onRefresh(true);
+        }
 
         if (checkPlayServices()) {
             if (getGcmRegistrationId().length() == 0) {
@@ -69,7 +79,7 @@ public class MainActivity extends BaseActivity
     protected void onRefresh(boolean forceApiReload) {
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
         if (forceApiReload) {
-            ((DataLoader) loader).loadFromApi();
+            ((DataLoader) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
@@ -88,7 +98,10 @@ public class MainActivity extends BaseActivity
             public DataObject<Cursor> loadInBackground() {
                 Cursor sessions = getDatabase().getSessions();
                 //if there are no sessions in the database, load them from API
-                if (sessions.getCount() == 0) loadFromApi();
+                if (sessions.getCount() == 0) {
+                    if (Config.DEBUG) Log.d(Config.TAG, "No sessions in DB, try load from API");
+                    loadFromApi(false);
+                }
                 return new DataObject<>(sessions);
             }
         };
