@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 
+import eu.zkkn.android.barcamp.loader.DataApiLoader;
 import eu.zkkn.android.barcamp.model.Session;
 
 
@@ -46,7 +47,7 @@ public class SessionDetailActivity extends BaseActivity
     protected void onRefresh(boolean forceApiReload) {
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSION_ID);
         if (forceApiReload) {
-            ((DataLoader) loader).loadFromApi(true);
+            ((DataApiLoader) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
@@ -61,7 +62,7 @@ public class SessionDetailActivity extends BaseActivity
     @Override
     public Loader<DataObject<Session>> onCreateLoader(int id, Bundle args) {
         final int sessionId = args.getInt(ARGS_SESSION_ID_KEY, 0);
-        return new DataLoader<Session>(this) {
+        return new DataApiLoader<Session>(this) {
             @Override
             public DataObject<Session> loadInBackground() {
                 return new DataObject<>(getDatabase().getSession(sessionId));

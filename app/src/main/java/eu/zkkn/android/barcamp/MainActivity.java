@@ -23,6 +23,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
+import eu.zkkn.android.barcamp.loader.DataApiLoader;
+
 
 public class MainActivity extends BaseActivity
         implements LoaderManager.LoaderCallbacks<DataObject<Cursor>> {
@@ -56,9 +58,9 @@ public class MainActivity extends BaseActivity
             }
         }
 
-        ListView mSessions = (ListView) findViewById(R.id.lv_sessions);
-        mSessions.setEmptyView(findViewById(R.id.progressbar));
-        mSessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView sessions = (ListView) findViewById(R.id.lv_sessions);
+        sessions.setEmptyView(findViewById(R.id.progressbar));
+        sessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int sessionId = (int) view.getTag();
@@ -71,7 +73,7 @@ public class MainActivity extends BaseActivity
         });
 
         mAdapter = new GroupsCursorAdapter(this, R.layout.row_session, null);
-        mSessions.setAdapter(mAdapter);
+        sessions.setAdapter(mAdapter);
 
     }
 
@@ -79,7 +81,7 @@ public class MainActivity extends BaseActivity
     protected void onRefresh(boolean forceApiReload) {
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
         if (forceApiReload) {
-            ((DataLoader) loader).loadFromApi(true);
+            ((DataApiLoader) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
@@ -93,7 +95,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public Loader<DataObject<Cursor>> onCreateLoader(int id, Bundle args) {
-        return new DataLoader<Cursor>(this) {
+        return new DataApiLoader<Cursor>(this) {
             @Override
             public DataObject<Cursor> loadInBackground() {
                 Cursor sessions = getDatabase().getSessions();
