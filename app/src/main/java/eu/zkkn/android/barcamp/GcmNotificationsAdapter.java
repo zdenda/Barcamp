@@ -18,7 +18,7 @@ public class GcmNotificationsAdapter extends SimpleCursorAdapter {
     private final DateFormat mTimeFormat;
 
     public GcmNotificationsAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
-        super(context, layout, c, from, to);
+        super(context, layout, c, from, to, 0);
         mDateFormat = android.text.format.DateFormat.getDateFormat(context);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(context);
     }
