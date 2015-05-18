@@ -23,7 +23,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
-import eu.zkkn.android.barcamp.loader.DataApiLoader;
+import eu.zkkn.android.barcamp.loader.ApiLoadInterface;
+import eu.zkkn.android.barcamp.loader.CursorDataApiLoader;
 
 
 public class MainActivity extends BaseActivity
@@ -81,7 +82,7 @@ public class MainActivity extends BaseActivity
     protected void onRefresh(boolean forceApiReload) {
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
         if (forceApiReload) {
-            ((DataApiLoader) loader).loadFromApi(true);
+            ((ApiLoadInterface) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
@@ -95,7 +96,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public Loader<DataObject<Cursor>> onCreateLoader(int id, Bundle args) {
-        return new DataApiLoader<Cursor>(this) {
+        return new CursorDataApiLoader(this) {
             @Override
             public DataObject<Cursor> loadInBackground() {
                 Cursor sessions = getDatabase().getSessions();

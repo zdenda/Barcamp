@@ -12,8 +12,6 @@ import eu.zkkn.android.barcamp.ApiRequestService;
 import eu.zkkn.android.barcamp.Config;
 import eu.zkkn.android.barcamp.DataObject;
 import eu.zkkn.android.barcamp.ErrorCode;
-import eu.zkkn.android.barcamp.loader.ApiLoadInterface;
-import eu.zkkn.android.barcamp.loader.DataLoader;
 
 /**
  *
