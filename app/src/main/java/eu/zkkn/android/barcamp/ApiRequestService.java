@@ -92,6 +92,7 @@ public class ApiRequestService extends IntentService {
                                 String name = jsonSession.getString("name");
                                 String speaker = jsonSession.getString("speaker");
                                 String description = jsonSession.getString("description");
+                                String cover = jsonSession.getString("cover");
 
                                 ContentValues values = new ContentValues();
                                 values.put(SessionTable.COLUMN_ID, id);
@@ -101,6 +102,7 @@ public class ApiRequestService extends IntentService {
                                 values.put(SessionTable.COLUMN_NAME, name);
                                 values.put(SessionTable.COLUMN_SPEAKER, speaker);
                                 values.put(SessionTable.COLUMN_DESCRIPTION, description);
+                                values.put(SessionTable.COLUMN_COVER, cover);
 
                                 db.insert(SessionTable.TABLE_NAME, null, values);
 

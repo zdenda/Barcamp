@@ -13,5 +13,6 @@ public class Session {
     public String name;
     public String speaker;
     public String description;
+    public String cover;
     public Alarm alarm;
 }

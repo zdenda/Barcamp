@@ -68,7 +68,8 @@ public class Data {
 
     public Cursor getSessions() {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
-                SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START};
+                SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START, SessionTable.COLUMN_END,
+                SessionTable.COLUMN_ROOM, SessionTable.COLUMN_COVER};
         //TODO: what is better to return Cursor or list of Sessions?
         return mDb.getReadableDatabase()
                 .query(SessionTable.TABLE_NAME, projection, null, null, null, null,
@@ -78,7 +79,7 @@ public class Data {
     public Session getSession(int sessionId) {
         String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
                 SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START, SessionTable.COLUMN_END,
-                SessionTable.COLUMN_ROOM, SessionTable.COLUMN_DESCRIPTION};
+                SessionTable.COLUMN_ROOM, SessionTable.COLUMN_DESCRIPTION, SessionTable.COLUMN_COVER};
         SQLiteDatabase database = mDb.getReadableDatabase();
         Cursor cursor = database.query(SessionTable.TABLE_NAME, projection,
                 SessionTable.COLUMN_ID + "=?", new String[]{String.valueOf(sessionId)},
@@ -94,6 +95,7 @@ public class Data {
         session.start = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_START)));
         session.end = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_END)));
         session.description = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_DESCRIPTION));
+        session.cover = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_COVER));
 
         session.alarm = getAlarm(sessionId);
 

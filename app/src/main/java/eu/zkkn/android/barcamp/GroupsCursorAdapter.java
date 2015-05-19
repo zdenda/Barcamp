@@ -6,6 +6,8 @@ import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,11 +66,26 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
             title.setVisibility(View.GONE);
         }
 
+        //TODO: add highlighting for a sessions with alarm Card.setCardBackgroundColor(Color.argb(50, 0, 0, 0));
+
+        NetworkImageView cover = (NetworkImageView) view.findViewById(R.id.niv_cover);
+        cover.setImageUrl(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_COVER)),
+                VolleySingleton.getInstance(context).getImageLoader());
+
         TextView name = (TextView) view.findViewById(R.id.tv_name);
         name.setText(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_NAME)));
 
         TextView speaker = (TextView) view.findViewById(R.id.tv_speaker);
         speaker.setText(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_SPEAKER)));
+
+        TextView timeAndRoom = (TextView) view.findViewById(R.id.tv_timeAndRoom);
+        String from = mTimeFormat.format(new Date(
+                cursor.getLong(mColumnIndexes.get(SessionTable.COLUMN_START))));
+        String to = mTimeFormat.format(new Date(
+                cursor.getLong(mColumnIndexes.get(SessionTable.COLUMN_END))));
+        String room = String.valueOf(cursor.getInt(mColumnIndexes.get(SessionTable.COLUMN_ROOM)));
+        timeAndRoom.setText(String.format(
+                context.getResources().getString(R.string.from_to_room), from, to, room));
 
         view.setTag(cursor.getInt(mColumnIndexes.get(SessionTable.COLUMN_ID)));
 

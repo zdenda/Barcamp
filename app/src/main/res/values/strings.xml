@@ -7,4 +7,6 @@
     <string name="title_activity_gcm_notifications">Oznámení</string>
 
     <string name="mass_notifications">Hromadná oznámení</string>
+
+    <string name="from_to_room">%1$s - %2$s v %3$s</string>
 </resources>
