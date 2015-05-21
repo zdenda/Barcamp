@@ -37,20 +37,20 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public static void setAlarm(Context context, int sessionId, Date time) {
+    public static boolean setAlarm(Context context, int sessionId, Date time) {
         long triggerAtMillis = time.getTime();
-        if (triggerAtMillis < System.currentTimeMillis()) return; // no alarms for events in the past
+        if (triggerAtMillis < System.currentTimeMillis()) return false;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         setExact(alarmManager, triggerAtMillis, getAlarmIntent(context, sessionId));
         Data data = new Data(context);
-        data.setAlarm(sessionId, time);
+        return data.setAlarm(sessionId, time);
     }
 
-    public static void cancelAlarm(Context context, int sessionId) {
+    public static boolean cancelAlarm(Context context, int sessionId) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(getAlarmIntent(context, sessionId));
         Data data = new Data(context);
-        data.deleteAlarm(sessionId);
+        return data.deleteAlarm(sessionId);
     }
 
     private static void setExact(AlarmManager alarmManager, long triggerAtMillis, PendingIntent operation) {

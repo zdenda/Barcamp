@@ -48,21 +48,34 @@ public class Data {
         db.close();
     }
 
-    public void setAlarm(int sessionId, Date time) {
+    /**
+     * Add an alarm to database
+     * @param sessionId ID of session for which the alarm is set
+     * @param time Time when the alarm will go off
+     * @return Return true if alarm was successfully added, otherwise return false
+     */
+    public boolean setAlarm(int sessionId, Date time) {
         ContentValues values = new ContentValues();
         values.put(AlarmTable.COLUMN_SESSION_ID, sessionId);
         values.put(AlarmTable.COLUMN_TIME, time.getTime());
 
         SQLiteDatabase db = mDb.getWritableDatabase();
-        db.insert(AlarmTable.TABLE_NAME, null, values);
+        long id = db.insert(AlarmTable.TABLE_NAME, null, values);
         db.close();
+        return id != -1; //error occurred during insert if ID is -1
     }
 
-    public void deleteAlarm(int sessionId) {
+    /**
+     * Remove alarm for session from database
+     * @param sessionId ID of session for which the alarm should be removed
+     * @return Return true if alarm was successfully removed, otherwise return false
+     */
+    public boolean deleteAlarm(int sessionId) {
         SQLiteDatabase db = mDb.getWritableDatabase();
-        db.delete(AlarmTable.TABLE_NAME, AlarmTable.COLUMN_SESSION_ID + "=?",
+        int rows = db.delete(AlarmTable.TABLE_NAME, AlarmTable.COLUMN_SESSION_ID + "=?",
                 new String[]{String.valueOf(sessionId)});
         db.close();
+        return rows > 0;
     }
 
 

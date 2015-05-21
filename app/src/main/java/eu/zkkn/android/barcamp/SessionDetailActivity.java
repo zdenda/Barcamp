@@ -95,11 +95,14 @@ public class SessionDetailActivity extends BaseActivity
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                boolean isAlarmSet;
                 if (isChecked) {
-                    AlarmReceiver.setAlarm(SessionDetailActivity.this, session.id, session.start);
+                    isAlarmSet = AlarmReceiver.setAlarm(SessionDetailActivity.this, session.id, session.start);
                 } else {
-                    AlarmReceiver.cancelAlarm(SessionDetailActivity.this, session.id);
+                    isAlarmSet = !AlarmReceiver.cancelAlarm(SessionDetailActivity.this, session.id);
                 }
+                // correct checkbox value if there was some problem with alarm setting/canceling
+                if (isAlarmSet != isChecked) buttonView.setChecked(isAlarmSet);
             }
         });
         findViewById(R.id.progressbar).setVisibility(View.GONE);
