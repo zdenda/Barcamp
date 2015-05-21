@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class SessionTable {
 
     // If you change table, you must increment the table version.
-    public static final int TABLE_VERSION = 2;
+    public static final int TABLE_VERSION = 3;
 
     public static final String TABLE_NAME = "session";
 
@@ -23,7 +23,7 @@ public class SessionTable {
 
     private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY,"
-            + COLUMN_ROOM + " INTEGER,"
+            + COLUMN_ROOM + " TEXT,"
             + COLUMN_START + " INTEGER,"
             + COLUMN_END + " INTEGER,"
             + COLUMN_NAME + " TEXT,"

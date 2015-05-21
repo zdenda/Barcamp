@@ -82,7 +82,7 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
                 cursor.getLong(mColumnIndexes.get(SessionTable.COLUMN_START))));
         String to = mTimeFormat.format(new Date(
                 cursor.getLong(mColumnIndexes.get(SessionTable.COLUMN_END))));
-        String room = String.valueOf(cursor.getInt(mColumnIndexes.get(SessionTable.COLUMN_ROOM)));
+        String room = cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_ROOM));
         timeAndRoom.setText(String.format(
                 context.getResources().getString(R.string.from_to_room), from, to, room));
 

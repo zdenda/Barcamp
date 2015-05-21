@@ -86,7 +86,7 @@ public class ApiRequestService extends IntentService {
                                 JSONObject jsonSession = jsonSessions.getJSONObject(i);
 
                                 int id = jsonSession.getInt("id");
-                                int room = jsonSession.getInt("room");
+                                String room = jsonSession.getString("room");
                                 Date start = dateFormat.parse(jsonSession.getString("start"));
                                 Date end = dateFormat.parse(jsonSession.getString("end"));
                                 String name = jsonSession.getString("name");

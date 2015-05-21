@@ -90,7 +90,7 @@ public class SessionDetailActivity extends BaseActivity
                 VolleySingleton.getInstance(this).getImageLoader());
         CheckBox notification = (CheckBox) findViewById(R.id.cb_notification);
         notification.setText(getString(R.string.from_to_room, mTimeFormat.format(session.start),
-                mTimeFormat.format(session.end), String.valueOf(session.room)));
+                mTimeFormat.format(session.end), session.room));
         notification.setChecked(session.alarm != null);
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

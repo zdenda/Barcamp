@@ -104,7 +104,7 @@ public class Data {
         session.id = sessionId;
         session.name = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_NAME));
         session.speaker = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_SPEAKER));
-        session.room = cursor.getInt(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_ROOM));
+        session.room = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_ROOM));
         session.start = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_START)));
         session.end = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_END)));
         session.description = cursor.getString(cursor.getColumnIndexOrThrow(SessionTable.COLUMN_DESCRIPTION));

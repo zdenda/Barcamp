@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Session {
     public int id;
-    public int room;
+    public String room;
     public Date start;
     public Date end;
     public String name;
