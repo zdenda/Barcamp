@@ -9,4 +9,5 @@
     <string name="mass_notifications">Hromadná oznámení</string>
 
     <string name="from_to_room">%1$s - %2$s v %3$s</string>
+    <string name="action_show_mass_notifications">Zobrazit hromadná oznámení</string>
 </resources>

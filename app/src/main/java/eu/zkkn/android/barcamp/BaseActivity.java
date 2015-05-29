@@ -1,5 +1,6 @@
 package eu.zkkn.android.barcamp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -48,6 +49,11 @@ public abstract class BaseActivity extends ActionBarActivity {
             case R.id.action_gcm_notifications:
                 Preferences.setGcmNotificationsEnabled(this, !item.isChecked());
                 onSettingsChanged();
+                return true;
+
+            case R.id.action_gcm_notifications_activity:
+                Intent intent = new Intent(this, GcmNotificationsActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
