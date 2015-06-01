@@ -9,8 +9,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import java.text.DateFormat;
 
 import eu.zkkn.android.barcamp.loader.DataApiLoader;
@@ -86,8 +84,6 @@ public class SessionDetailActivity extends BaseActivity
         ((TextView) findViewById(R.id.tv_name)).setText(session.name);
         ((TextView) findViewById(R.id.tv_speaker)).setText(session.speaker);
         ((TextView) findViewById(R.id.tv_description)).setText(session.description);
-        ((NetworkImageView) findViewById(R.id.niv_cover)).setImageUrl(session.cover,
-                VolleySingleton.getInstance(this).getImageLoader());
         CheckBox notification = (CheckBox) findViewById(R.id.cb_notification);
         notification.setText(getString(R.string.from_to_room, mTimeFormat.format(session.start),
                 mTimeFormat.format(session.end), session.room));

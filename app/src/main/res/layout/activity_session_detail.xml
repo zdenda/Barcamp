@@ -20,13 +20,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <TextView
+            android:id="@+id/tv_speaker"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <CheckBox
             android:id="@+id/cb_notification"
             android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <ScrollView
@@ -49,26 +55,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" />
-
-            <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/niv_cover"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_horizontal"
-                android:minHeight="100dp"
-                android:minWidth="100dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/tv_speaker"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
     </ScrollView>
