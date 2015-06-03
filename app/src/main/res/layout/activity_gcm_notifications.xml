@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/sw_notifications"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/sw_notifications"
@@ -18,6 +19,10 @@
         android:text="@string/mass_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
 
@@ -26,6 +31,8 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center" />
 
 </RelativeLayout>
