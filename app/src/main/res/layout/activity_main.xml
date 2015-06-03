@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:dividerHeight="6dp"
-        android:listSelector="#00ffffff" />
+        android:listSelector="#00ffffff"
+        android:background="@color/background" />
 
     <ProgressBar
         android:id="@+id/progressbar"

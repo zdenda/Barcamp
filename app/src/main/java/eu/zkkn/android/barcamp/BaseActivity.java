@@ -18,6 +18,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setElevation(0);
         mData = new Data(this);
     }
 

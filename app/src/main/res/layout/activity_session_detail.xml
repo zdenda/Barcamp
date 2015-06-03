@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eeeeee"
     tools:context="eu.zkkn.android.barcamp.SessionDetailActivity">
 
     <LinearLayout
@@ -10,14 +9,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#99cc00"
-        android:padding="16dp">
+        android:background="@color/primary_light"
+        android:padding="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/tv_name"
             android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -25,6 +27,7 @@
             android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <CheckBox
@@ -32,6 +35,8 @@
             android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:textColor="@color/text_secondary"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
@@ -54,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"
+                android:textColor="@color/text_secondary" />
 
         </LinearLayout>
     </ScrollView>
