@@ -2,8 +2,8 @@ package eu.zkkn.android.barcamp;
 
 import android.app.IntentService;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -74,7 +74,7 @@ public class ApiRequestService extends IntentService {
                     @Override
                     public void onResponse(JSONObject response) {
                         int errorCode = ErrorCode.NO_ERROR;
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Data data = new Data(ApiRequestService.this);
                         SQLiteDatabase db = new DbHelper(ApiRequestService.this).getWritableDatabase();
                         //TODO: maybe use transaction; db.beginTransaction();
@@ -86,13 +86,18 @@ public class ApiRequestService extends IntentService {
                                 JSONObject jsonSession = jsonSessions.getJSONObject(i);
 
                                 int id = jsonSession.getInt("id");
-                                String room = jsonSession.getString("room");
-                                Date start = dateFormat.parse(jsonSession.getString("start"));
-                                Date end = dateFormat.parse(jsonSession.getString("end"));
                                 String name = jsonSession.getString("name");
-                                String speaker = jsonSession.getString("speaker");
-                                String description = jsonSession.getString("description");
-                                String cover = jsonSession.getString("cover");
+                                String room = jsonSession.getString("room");
+                                Date start = dateFormat.parse(Config.DATE + " " + jsonSession.getString("start"));
+                                Date end = dateFormat.parse(Config.DATE + " " + jsonSession.getString("end"));
+
+                                String speaker = jsonSession.isNull("speaker") ?
+                                        null : jsonSession.getString("speaker");
+                                String description = jsonSession.isNull("description") ?
+                                        null : jsonSession.getString("description");
+                                String cover = jsonSession.isNull("cover") ?
+                                        null : jsonSession.getString("cover");
+
 
                                 ContentValues values = new ContentValues();
                                 values.put(SessionTable.COLUMN_ID, id);

@@ -82,8 +82,13 @@ public class SessionDetailActivity extends BaseActivity
 
     private void setWidgets(final Session session) {
         ((TextView) findViewById(R.id.tv_name)).setText(session.name);
-        ((TextView) findViewById(R.id.tv_speaker)).setText(session.speaker);
+
+        TextView speaker = (TextView) findViewById(R.id.tv_speaker);
+        speaker.setText(session.speaker);
+        if (session.speaker == null) speaker.setVisibility(View.GONE);
+
         ((TextView) findViewById(R.id.tv_description)).setText(session.description);
+
         CheckBox notification = (CheckBox) findViewById(R.id.cb_notification);
         notification.setText(getString(R.string.from_to_room, mTimeFormat.format(session.start),
                 mTimeFormat.format(session.end), session.room));
@@ -101,6 +106,7 @@ public class SessionDetailActivity extends BaseActivity
                 if (isAlarmSet != isChecked) buttonView.setChecked(isAlarmSet);
             }
         });
+
         findViewById(R.id.progressbar).setVisibility(View.GONE);
     }
 

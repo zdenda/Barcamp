@@ -68,14 +68,26 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
         //TODO: add highlighting for a sessions with alarm Card.setCardBackgroundColor(Color.argb(50, 0, 0, 0));
 
         NetworkImageView cover = (NetworkImageView) view.findViewById(R.id.niv_cover);
-        cover.setImageUrl(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_COVER)),
-                VolleySingleton.getInstance(context).getImageLoader());
+        cover.setDefaultImageResId(R.mipmap.ic_launcher);
+        String coverImageUrl = cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_COVER));
+        if (coverImageUrl != null) {
+            cover.setImageUrl(coverImageUrl, VolleySingleton.getInstance(context).getImageLoader());
+        } else {
+            cover.setImageUrl(null, null);
+        }
 
         TextView name = (TextView) view.findViewById(R.id.tv_name);
         name.setText(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_NAME)));
 
         TextView speaker = (TextView) view.findViewById(R.id.tv_speaker);
-        speaker.setText(cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_SPEAKER)));
+        String speakerText = cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_SPEAKER));
+        if (speakerText != null) {
+            speaker.setText(speakerText);
+            speaker.setVisibility(View.VISIBLE);
+        } else {
+            speaker.setText("");
+            speaker.setVisibility(View.GONE);
+        }
 
         TextView timeAndRoom = (TextView) view.findViewById(R.id.tv_timeAndRoom);
         String from = mTimeFormat.format(new Date(

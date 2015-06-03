@@ -18,7 +18,12 @@ public class Config {
     /**
      * API URL
      */
-    public static final String API_URL = "http://demo5483269.mockable.io/";
+    public static final String API_URL = "http://www.barcampjc.cz/api/v1/sessions";
+
+    /**
+     * The date when Barcamp is held
+     */
+     public static final String DATE = "2015-06-13";
 
     /**
      * Version of Barcamp Google cloud message type which will this app accept
