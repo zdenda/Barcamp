@@ -37,7 +37,7 @@
                 android:minWidth="80dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/logo_barcamp_jc" />
 
             <TextView
                 android:id="@+id/tv_name"

@@ -68,7 +68,7 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
         //TODO: add highlighting for a sessions with alarm Card.setCardBackgroundColor(Color.argb(50, 0, 0, 0));
 
         NetworkImageView cover = (NetworkImageView) view.findViewById(R.id.niv_cover);
-        cover.setDefaultImageResId(R.mipmap.ic_launcher);
+        cover.setDefaultImageResId(R.drawable.logo_barcamp_jc);
         String coverImageUrl = cursor.getString(mColumnIndexes.get(SessionTable.COLUMN_COVER));
         if (coverImageUrl != null) {
             cover.setImageUrl(coverImageUrl, VolleySingleton.getInstance(context).getImageLoader());
