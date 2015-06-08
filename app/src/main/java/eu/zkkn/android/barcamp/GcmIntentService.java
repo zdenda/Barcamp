@@ -52,7 +52,7 @@ public class GcmIntentService extends IntentService {
 
     private void showNotification(String text) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Barcamp")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setContentText(text)

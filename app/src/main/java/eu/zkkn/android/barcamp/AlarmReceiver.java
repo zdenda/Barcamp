@@ -71,7 +71,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context, int sessionId, String title, String text) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setContentText(text)
