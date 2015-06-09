@@ -10,11 +10,6 @@ import android.preference.PreferenceManager;
 public class Preferences {
 
     /**
-     * Boolean preference that indicates whether the GCM notifications should be showed to the user.
-     */
-    private static final String PREF_KEY_GCM_NOTIFICATIONS_ENABLED = "pref_gcm_notifications_enabled";
-
-    /**
      * Boolean preference that indicates whether notifications for selected sessions should be showed to the user.
      */
     private static final String PREF_KEY_SESSIONS_NOTIFICATIONS_ENABLED = "pref_sessions_notifications_enabled";
@@ -26,14 +21,6 @@ public class Preferences {
             sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
         return sPreferences;
-    }
-
-    public static void setGcmNotificationsEnabled(Context context, boolean enabled) {
-        getPref(context).edit().putBoolean(PREF_KEY_GCM_NOTIFICATIONS_ENABLED, enabled).commit();
-    }
-
-    public static boolean isGcmNotificationsEnabled(Context context) {
-        return getPref(context).getBoolean(PREF_KEY_GCM_NOTIFICATIONS_ENABLED, true);
     }
 
     public static void setSessionsNotificationsEnabled(Context context, boolean enabled) {

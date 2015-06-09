@@ -9,10 +9,8 @@ import java.util.Date;
 
 import eu.zkkn.android.barcamp.database.AlarmTable;
 import eu.zkkn.android.barcamp.database.DbHelper;
-import eu.zkkn.android.barcamp.database.GcmNotificationTable;
 import eu.zkkn.android.barcamp.database.SessionTable;
 import eu.zkkn.android.barcamp.model.Alarm;
-import eu.zkkn.android.barcamp.model.GcmNotification;
 import eu.zkkn.android.barcamp.model.Session;
 
 /**
@@ -32,24 +30,6 @@ public class Data {
      */
     public void close() {
         mDb.close();
-    }
-
-    public Cursor getGcmNotifications() {
-        String[] projection = {GcmNotificationTable.COLUMN_ID, GcmNotificationTable.COLUMN_RECEIVED,
-                GcmNotificationTable.COLUMN_TEXT};
-        return mDb.getReadableDatabase()
-                .query(GcmNotificationTable.TABLE_NAME, projection, null, null, null, null,
-                        GcmNotificationTable.COLUMN_RECEIVED + " DESC");
-    }
-
-    public void saveGcmNotification(GcmNotification notification) {
-        ContentValues values = new ContentValues();
-        values.put(GcmNotificationTable.COLUMN_RECEIVED, notification.received.getTime());
-        values.put(GcmNotificationTable.COLUMN_TEXT, notification.text);
-
-        SQLiteDatabase db = mDb.getWritableDatabase();
-        db.insert(GcmNotificationTable.TABLE_NAME, null, values);
-        db.close();
     }
 
     /**

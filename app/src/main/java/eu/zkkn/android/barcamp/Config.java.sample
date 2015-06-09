@@ -23,22 +23,11 @@ public class Config {
     /**
      * The date when Barcamp is held
      */
-     public static final String DATE = "2015-06-13";
-
-    /**
-     * Version of Barcamp Google cloud message type which will this app accept
-     */
-    public static final String BARCAMP_GCM_VERSION = "1";
+    public static final String DATE = "2015-06-13";
 
     /**
       * Minimal interval for automatic synchronization with API in ms
       */
-     public static final long API_SYNC_INTERVAL_MS = 8 * 60 * 60 * 1000;
-
-    /**
-     * This is the Project Number from the Google Developers Console
-     * https://console.developers.google.com/project
-     */
-    public static final String GCM_SENDER_ID = "...";
+    public static final long API_SYNC_INTERVAL_MS = 8 * 60 * 60 * 1000;
 
 }

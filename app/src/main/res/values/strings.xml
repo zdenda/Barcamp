@@ -4,13 +4,10 @@
     <string name="action_refresh">Obnovit</string>
 
     <string name="title_activity_session_detail">Detail přednášky</string>
-    <string name="title_activity_gcm_notifications">Oznámení</string>
 
-    <string name="mass_notifications">Hromadná oznámení</string>
     <string name="sessions_notifications">Upozorňovat na přednášky</string>
 
     <string name="from_to_room">%1$s - %2$s v %3$s</string>
-    <string name="action_show_mass_notifications">Zobrazit hromadná oznámení</string>
 
     <string name="alert_error_title">Chyba</string>
     <string name="alert_error_message">Při načítání dat došlo k chybě. (Kód chyby: %1$d)</string>
