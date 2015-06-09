@@ -14,6 +14,11 @@ public class Preferences {
      */
     private static final String PREF_KEY_GCM_NOTIFICATIONS_ENABLED = "pref_gcm_notifications_enabled";
 
+    /**
+     * Boolean preference that indicates whether notifications for selected sessions should be showed to the user.
+     */
+    private static final String PREF_KEY_SESSIONS_NOTIFICATIONS_ENABLED = "pref_sessions_notifications_enabled";
+
     private static SharedPreferences sPreferences;
 
     private static SharedPreferences getPref(Context context) {
@@ -29,6 +34,14 @@ public class Preferences {
 
     public static boolean isGcmNotificationsEnabled(Context context) {
         return getPref(context).getBoolean(PREF_KEY_GCM_NOTIFICATIONS_ENABLED, true);
+    }
+
+    public static void setSessionsNotificationsEnabled(Context context, boolean enabled) {
+        getPref(context).edit().putBoolean(PREF_KEY_SESSIONS_NOTIFICATIONS_ENABLED, enabled).commit();
+    }
+
+    public static boolean isSessionsNotificationsEnabled(Context context) {
+        return getPref(context).getBoolean(PREF_KEY_SESSIONS_NOTIFICATIONS_ENABLED, true);
     }
 
 }

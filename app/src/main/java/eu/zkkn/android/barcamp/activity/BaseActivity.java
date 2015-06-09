@@ -41,6 +41,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.findItem(R.id.action_gcm_notifications)
                 .setChecked(Preferences.isGcmNotificationsEnabled(this));
+        menu.findItem(R.id.action_sessions_notifications)
+                .setChecked(Preferences.isSessionsNotificationsEnabled(this));
         return true;
     }
 
@@ -56,6 +58,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             case R.id.action_gcm_notifications:
                 Preferences.setGcmNotificationsEnabled(this, !item.isChecked());
+                onSettingsChanged();
+                return true;
+
+            case R.id.action_sessions_notifications:
+                Preferences.setSessionsNotificationsEnabled(this, !item.isChecked());
                 onSettingsChanged();
                 return true;
 

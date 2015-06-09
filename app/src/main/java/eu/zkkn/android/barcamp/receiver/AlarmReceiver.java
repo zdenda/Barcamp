@@ -15,6 +15,7 @@ import java.util.Date;
 
 import eu.zkkn.android.barcamp.Config;
 import eu.zkkn.android.barcamp.Data;
+import eu.zkkn.android.barcamp.Preferences;
 import eu.zkkn.android.barcamp.R;
 import eu.zkkn.android.barcamp.activity.SessionDetailActivity;
 import eu.zkkn.android.barcamp.model.Session;
@@ -74,6 +75,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context, int sessionId, String title, String text) {
+        // Don't show notification if they're disabled in settings
+        if (!Preferences.isSessionsNotificationsEnabled(context)) return;
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
