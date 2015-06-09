@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 
@@ -61,12 +60,6 @@ public class SessionDetailActivity extends BaseActivity
     @Override
     public void onRefresh() {
         onRefresh(true);
-    }
-
-    @Override
-    protected void showError(int errorCode) {
-        //TODO: display proper error message
-        Toast.makeText(this, "Error: " + errorCode, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package eu.zkkn.android.barcamp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -69,8 +71,28 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     protected void showError(int errorCode) {
-        // if nothing else, at least log that error
+        // log error code
         if (Config.DEBUG) Log.d(Config.TAG, "ERROR (code: "+ errorCode +")");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.alert_error_title))
+                .setMessage(getString(R.string.alert_error_message, errorCode))
+                .setPositiveButton(getString(R.string.alert_error_button_try_again),
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onRefresh(true);
+                    }
+                })
+                .setNegativeButton(getString(R.string.alert_error_button_cancel),
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.show();
     }
 
     protected abstract void onRefresh(boolean forceApiReload);

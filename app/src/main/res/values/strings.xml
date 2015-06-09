@@ -10,4 +10,9 @@
 
     <string name="from_to_room">%1$s - %2$s v %3$s</string>
     <string name="action_show_mass_notifications">Zobrazit hromadná oznámení</string>
+
+    <string name="alert_error_title">Chyba</string>
+    <string name="alert_error_message">Při načítání dat došlo k chybě. (Kód chyby: %1$d)</string>
+    <string name="alert_error_button_try_again">Znovu</string>
+    <string name="alert_error_button_cancel">Storno</string>
 </resources>

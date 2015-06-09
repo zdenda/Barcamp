@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -97,12 +96,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onRefresh() {
         onRefresh(true);
-    }
-
-    @Override
-    protected void showError(int errorCode) {
-        //TODO: display proper error message
-        Toast.makeText(this, "Error: " + errorCode, Toast.LENGTH_LONG).show();
     }
 
     @Override
