@@ -40,18 +40,15 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_session"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_header"
-        android:layout_alignParentBottom="true">
+        android:layout_width="match_parent"
+        android:layout_below="@+id/ll_header">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_description"
@@ -62,8 +59,9 @@
                 android:paddingRight="16dp"
                 android:textColor="@color/text_secondary" />
 
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressbar"

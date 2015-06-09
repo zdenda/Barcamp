@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,8 +28,8 @@ import eu.zkkn.android.barcamp.loader.ApiLoadInterface;
 import eu.zkkn.android.barcamp.loader.CursorDataApiLoader;
 
 
-public class MainActivity extends BaseActivity
-        implements LoaderManager.LoaderCallbacks<DataObject<Cursor>> {
+public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
+        LoaderManager.LoaderCallbacks<DataObject<Cursor>> {
 
     private static final String PREF_APP_VERSION = "appVersion";
     private static final String PREF_REG_ID = "gcmRegistrationId";
@@ -36,11 +37,15 @@ public class MainActivity extends BaseActivity
     private static final int LOADER_SESSIONS_ID = 0;
 
     private GroupsCursorAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl_sessions);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         getSupportLoaderManager().initLoader(LOADER_SESSIONS_ID, null, this);
 
@@ -80,12 +85,18 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onRefresh(boolean forceApiReload) {
+        mSwipeRefreshLayout.setRefreshing(true);
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
         if (forceApiReload) {
             ((ApiLoadInterface) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        onRefresh(true);
     }
 
     @Override
@@ -116,11 +127,13 @@ public class MainActivity extends BaseActivity
             showError(data.getAndResetErrorCode());
         }
         mAdapter.swapCursor(data.getData());
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<DataObject<Cursor>> loader) {
         mAdapter.swapCursor(null);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 

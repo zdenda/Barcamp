@@ -3,6 +3,7 @@ package eu.zkkn.android.barcamp;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -16,7 +17,7 @@ import eu.zkkn.android.barcamp.model.Session;
 
 
 public class SessionDetailActivity extends BaseActivity
-        implements LoaderManager.LoaderCallbacks<DataObject<Session>> {
+        implements LoaderManager.LoaderCallbacks<DataObject<Session>>, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String SESSION_ID = "sessionId";
 
@@ -27,6 +28,7 @@ public class SessionDetailActivity extends BaseActivity
      * Format for output of time
      */
     private DateFormat mTimeFormat;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class SessionDetailActivity extends BaseActivity
         setContentView(R.layout.activity_session_detail);
 
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl_session);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         int sessionId = getIntent().getIntExtra(SESSION_ID, 0);
         if (sessionId > 0) {
@@ -45,12 +49,18 @@ public class SessionDetailActivity extends BaseActivity
 
     @Override
     protected void onRefresh(boolean forceApiReload) {
+        mSwipeRefreshLayout.setRefreshing(true);
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSION_ID);
         if (forceApiReload) {
             ((DataApiLoader) loader).loadFromApi(true);
         } else {
             loader.forceLoad();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        onRefresh(true);
     }
 
     @Override
@@ -73,10 +83,12 @@ public class SessionDetailActivity extends BaseActivity
     @Override
     public void onLoadFinished(Loader<DataObject<Session>> loader, DataObject<Session> data) {
         if (!data.hasError() && data.getData() != null) setWidgets(data.getData());
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<DataObject<Session>> loader) {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 
