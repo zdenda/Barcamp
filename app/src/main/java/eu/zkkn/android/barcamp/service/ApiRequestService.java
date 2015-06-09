@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.service;
 
 import android.app.IntentService;
 import android.content.ContentValues;
@@ -20,6 +20,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import eu.zkkn.android.barcamp.receiver.AlarmReceiver;
+import eu.zkkn.android.barcamp.Config;
+import eu.zkkn.android.barcamp.Data;
+import eu.zkkn.android.barcamp.database.DbHelper;
+import eu.zkkn.android.barcamp.ErrorCode;
+import eu.zkkn.android.barcamp.database.SessionTable;
+import eu.zkkn.android.barcamp.VolleySingleton;
 import eu.zkkn.android.barcamp.model.Alarm;
 
 /**
@@ -28,14 +35,14 @@ import eu.zkkn.android.barcamp.model.Alarm;
 public class ApiRequestService extends IntentService {
 
     public static final String API_SERVICE_BROADCAST_ACTION =
-            "eu.zkkn.android.barcamp.ApiRequestService.BROADCAST";
+            "eu.zkkn.android.barcamp.service.ApiRequestService.BROADCAST";
     public static final String EXTENDED_ERROR_CODE =
-            "eu.zkkn.android.barcamp.ApiRequestService.STATUS";
+            "eu.zkkn.android.barcamp.service.ApiRequestService.STATUS";
 
 
     private static final String VOLLEY_TAG = "ApiRequestServiceVolleyTag";
     private static final String ACTION_GET_SESSIONS =
-            "eu.zkkn.android.barcamp.ApiRequestService.action.GET_SESSIONS";
+            "eu.zkkn.android.barcamp.service.ApiRequestService.action.GET_SESSIONS";
 
 
     /**

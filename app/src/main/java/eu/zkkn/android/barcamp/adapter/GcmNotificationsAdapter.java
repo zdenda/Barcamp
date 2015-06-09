@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Date;
+
+import eu.zkkn.android.barcamp.R;
 
 /**
  *

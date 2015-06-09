@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,6 +8,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import eu.zkkn.android.barcamp.Config;
+import eu.zkkn.android.barcamp.Data;
+import eu.zkkn.android.barcamp.Preferences;
+import eu.zkkn.android.barcamp.R;
 
 /**
  *

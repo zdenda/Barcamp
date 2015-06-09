@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,10 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
+import eu.zkkn.android.barcamp.Config;
+import eu.zkkn.android.barcamp.DataObject;
+import eu.zkkn.android.barcamp.adapter.GroupsCursorAdapter;
+import eu.zkkn.android.barcamp.R;
 import eu.zkkn.android.barcamp.loader.ApiLoadInterface;
 import eu.zkkn.android.barcamp.loader.CursorDataApiLoader;
 
@@ -173,7 +177,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, regId == null ?
-                        "Chyba - Registrace neprobÄ›hla" : regId);
+                        "Chyba - Registrace neprobìhla" : regId);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }

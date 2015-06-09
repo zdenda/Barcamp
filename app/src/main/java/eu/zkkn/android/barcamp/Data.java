@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.Date;
 
+import eu.zkkn.android.barcamp.database.AlarmTable;
+import eu.zkkn.android.barcamp.database.DbHelper;
+import eu.zkkn.android.barcamp.database.GcmNotificationTable;
+import eu.zkkn.android.barcamp.database.SessionTable;
 import eu.zkkn.android.barcamp.model.Alarm;
 import eu.zkkn.android.barcamp.model.GcmNotification;
 import eu.zkkn.android.barcamp.model.Session;

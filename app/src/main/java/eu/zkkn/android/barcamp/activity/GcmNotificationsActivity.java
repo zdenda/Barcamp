@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.activity;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 
+import eu.zkkn.android.barcamp.database.GcmNotificationTable;
+import eu.zkkn.android.barcamp.adapter.GcmNotificationsAdapter;
+import eu.zkkn.android.barcamp.Preferences;
+import eu.zkkn.android.barcamp.R;
 import eu.zkkn.android.barcamp.loader.CursorDataLoader;
 
 

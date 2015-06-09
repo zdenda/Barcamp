@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,6 +10,12 @@ import android.support.v4.app.NotificationCompat;
 
 import java.util.Date;
 
+import eu.zkkn.android.barcamp.Config;
+import eu.zkkn.android.barcamp.Data;
+import eu.zkkn.android.barcamp.receiver.GcmReceiver;
+import eu.zkkn.android.barcamp.Preferences;
+import eu.zkkn.android.barcamp.R;
+import eu.zkkn.android.barcamp.activity.GcmNotificationsActivity;
 import eu.zkkn.android.barcamp.model.GcmNotification;
 
 /**

@@ -8,7 +8,7 @@ import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import eu.zkkn.android.barcamp.ApiRequestService;
+import eu.zkkn.android.barcamp.service.ApiRequestService;
 import eu.zkkn.android.barcamp.Config;
 import eu.zkkn.android.barcamp.DataObject;
 import eu.zkkn.android.barcamp.ErrorCode;

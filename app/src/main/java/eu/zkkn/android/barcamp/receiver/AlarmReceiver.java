@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.receiver;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -13,6 +13,10 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.util.Date;
 
+import eu.zkkn.android.barcamp.Config;
+import eu.zkkn.android.barcamp.Data;
+import eu.zkkn.android.barcamp.R;
+import eu.zkkn.android.barcamp.activity.SessionDetailActivity;
 import eu.zkkn.android.barcamp.model.Session;
 
 /**

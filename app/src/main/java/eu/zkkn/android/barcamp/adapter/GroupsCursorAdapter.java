@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +12,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import eu.zkkn.android.barcamp.R;
+import eu.zkkn.android.barcamp.database.SessionTable;
+import eu.zkkn.android.barcamp.VolleySingleton;
 
 /**
  * Cursor Adapter with items in groups with title

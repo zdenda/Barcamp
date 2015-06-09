@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,24 +32,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SessionDetailActivity"
+            android:name=".activity.SessionDetailActivity"
             android:label="@string/title_activity_session_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.zkkn.android.barcamp.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".GcmNotificationsActivity"
+            android:name=".activity.GcmNotificationsActivity"
             android:label="@string/title_activity_gcm_notifications" >
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.zkkn.android.barcamp.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
 
         <receiver
-            android:name=".GcmReceiver"
+            android:name=".receiver.GcmReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -60,17 +60,17 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
 
         <service
-            android:name=".GcmIntentService"
+            android:name=".service.GcmIntentService"
             android:exported="false" >
         </service>
         <service
-            android:name=".ApiRequestService"
+            android:name=".service.ApiRequestService"
             android:exported="false" >
         </service>
 

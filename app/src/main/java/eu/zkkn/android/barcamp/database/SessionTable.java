@@ -1,4 +1,4 @@
-package eu.zkkn.android.barcamp;
+package eu.zkkn.android.barcamp.database;
 
 import android.database.sqlite.SQLiteDatabase;
 
