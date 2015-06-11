@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Keeps the processor from sleeping. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Receive broadcast after the system finishes booting. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -31,6 +33,11 @@
 
         <receiver
             android:name=".receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver
+            android:name=".receiver.BootReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>

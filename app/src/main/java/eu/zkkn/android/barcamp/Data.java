@@ -132,4 +132,9 @@ public class Data {
         return alarm;
     }
 
+    public Cursor getAlarms() {
+        String[] projection = {AlarmTable.COLUMN_SESSION_ID, AlarmTable.COLUMN_TIME};
+        return mDb.getReadableDatabase().query(AlarmTable.TABLE_NAME, projection, null, null, null, null, null);
+    }
+
 }

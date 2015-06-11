@@ -23,8 +23,6 @@ import eu.zkkn.android.barcamp.model.Session;
 /**
  *
  */
-//TODO: all alarms are canceled when a device shuts down
-//https://developer.android.com/training/scheduling/alarms.html#boot
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String INTENT_SESSION_ID = "intentExtraSessionId";
