@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.Date;
 
@@ -64,13 +65,22 @@ public class Data {
 
 
     public Cursor getSessions() {
-        String[] projection = {SessionTable.COLUMN_ID, SessionTable.COLUMN_NAME,
-                SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START, SessionTable.COLUMN_END,
-                SessionTable.COLUMN_ROOM, SessionTable.COLUMN_COVER};
         //TODO: what is better to return Cursor or list of Sessions?
-        return mDb.getReadableDatabase()
-                .query(SessionTable.TABLE_NAME, projection, null, null, null, null,
-                        SessionTable.COLUMN_START);
+
+        // Left Join Session and Alarm tables
+        String tables = SessionTable.TABLE_NAME + " LEFT JOIN " + AlarmTable.TABLE_NAME
+                + " ON " + SessionTable.TABLE_NAME + "." + SessionTable.COLUMN_ID + " = "
+                + AlarmTable.TABLE_NAME + "." + AlarmTable.COLUMN_SESSION_ID;
+
+        String[] columns = {SessionTable.TABLE_NAME + "." + SessionTable.COLUMN_ID, // column _id is in both tables
+                SessionTable.COLUMN_NAME, SessionTable.COLUMN_SPEAKER, SessionTable.COLUMN_START,
+                SessionTable.COLUMN_END, SessionTable.COLUMN_ROOM, SessionTable.COLUMN_COVER,
+                AlarmTable.COLUMN_TIME};
+
+        String query = SQLiteQueryBuilder.buildQueryString(false, tables, columns, null, null, null,
+                SessionTable.COLUMN_START, null);
+
+        return mDb.getReadableDatabase().rawQuery(query, null);
     }
 
     public Session getSession(int sessionId) {

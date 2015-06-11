@@ -24,6 +24,8 @@ import eu.zkkn.android.barcamp.loader.CursorDataApiLoader;
 public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
         LoaderManager.LoaderCallbacks<DataObject<Cursor>> {
 
+    static final int TOGGLE_ALARM_REQUEST = 0;
+
     private static final String PREF_LAST_API_SYNC = "lastApiSyncTimeMs";
     private static final int LOADER_SESSIONS_ID = 0;
 
@@ -58,7 +60,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 if (sessionId > 0) {
                     Intent intent = new Intent(MainActivity.this, SessionDetailActivity.class);
                     intent.putExtra(SessionDetailActivity.SESSION_ID, sessionId);
-                    startActivity(intent);
+                    startActivityForResult(intent, TOGGLE_ALARM_REQUEST);
                 }
             }
         });
@@ -69,7 +71,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // if alarm was changed, refresh actual data from database
+        if (requestCode == TOGGLE_ALARM_REQUEST && resultCode == RESULT_OK) {
+            onRefresh(false);
+        }
+    }
+
+    @Override
     protected void onRefresh(boolean forceApiReload) {
+        if (Config.DEBUG) Log.d(Config.TAG, "MainActivity.onRefresh()" + (forceApiReload ? "FORCE" : ""));
         mSwipeRefreshLayout.setRefreshing(true);
         Loader loader = getSupportLoaderManager().getLoader(LOADER_SESSIONS_ID);
         if (forceApiReload) {

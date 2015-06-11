@@ -105,6 +105,7 @@ public class SessionDetailActivity extends BaseActivity
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setResult(RESULT_OK); // alarm is going to be changed
                 boolean isAlarmSet;
                 if (isChecked) {
                     isAlarmSet = AlarmReceiver.setAlarm(SessionDetailActivity.this, session.id, session.start);

@@ -2,7 +2,9 @@ package eu.zkkn.android.barcamp.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.ResourceCursorAdapter;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import eu.zkkn.android.barcamp.R;
+import eu.zkkn.android.barcamp.database.AlarmTable;
 import eu.zkkn.android.barcamp.database.SessionTable;
 import eu.zkkn.android.barcamp.VolleySingleton;
 
@@ -69,7 +72,12 @@ public class GroupsCursorAdapter extends ResourceCursorAdapter {
             title.setVisibility(View.GONE);
         }
 
-        //TODO: add highlighting for a sessions with alarm Card.setCardBackgroundColor(Color.argb(50, 0, 0, 0));
+        CardView cardView = (CardView) view.findViewById(R.id.cv_card);
+        if (!cursor.isNull(mColumnIndexes.get(AlarmTable.COLUMN_TIME))) {
+            cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_light));
+        } else {
+            cardView.setCardBackgroundColor(Color.WHITE);
+        }
 
         NetworkImageView cover = (NetworkImageView) view.findViewById(R.id.niv_cover);
         cover.setDefaultImageResId(R.drawable.logo_barcamp_jc);
