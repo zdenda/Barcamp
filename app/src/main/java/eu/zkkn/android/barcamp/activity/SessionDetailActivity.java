@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 
-import eu.zkkn.android.barcamp.receiver.AlarmReceiver;
 import eu.zkkn.android.barcamp.DataObject;
 import eu.zkkn.android.barcamp.Helper;
 import eu.zkkn.android.barcamp.R;
 import eu.zkkn.android.barcamp.loader.DataApiLoader;
 import eu.zkkn.android.barcamp.model.Session;
+import eu.zkkn.android.barcamp.receiver.AlarmReceiver;
 
 
 public class SessionDetailActivity extends BaseActivity
